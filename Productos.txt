@@ -1,0 +1,4 @@
+1;Inka Kola;2.5;15
+2;Coca Kola;2.7;26
+3;Kola Inglesa;1.0;30
+11;Coca Cola;1.0;1
