@@ -9,6 +9,11 @@ public class Ingreso {
 	private double costoIngreso;
 	private int estado;
 	
+	
+	public Ingreso() {
+		super();
+	}
+
 	public Ingreso(int codigoIngreso, int codigoSocio, String fechaIngreso, String horaIngreso, int numeroInvitados,
 			double costoIngreso, int estado) {
 		super();

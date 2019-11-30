@@ -58,7 +58,14 @@ public class ProductoControlador {
 			}
 		}
 	}
-	
+	public int codigoCorrelativo(){
+		if(tamaño() ==0)
+			return 20001;
+		else{
+			int ultCodigo = obtener(tamaño()-1).getCodigoProducto();
+			return ultCodigo + 1;
+		}
+	}
 	private void cargaData(){
 		BufferedReader br = null;
 		try {
@@ -84,6 +91,7 @@ public class ProductoControlador {
 				} catch (Exception e) {}
 		}
 	}
+	
 	public void grabarData() {
 		PrintWriter pw = null;
 		try {

@@ -11,13 +11,17 @@ public class Bungalow {
 		super();
 	}
 
-	public Bungalow(int numeroBungalow, int categoria, double precioPorDia, int estado) {
+
+
+	public Bungalow(int numeroBungalow, int estado, int categoria, double precioPorDia) {
 		super();
 		this.numeroBungalow = numeroBungalow;
+		this.estado = estado;
 		this.categoria = categoria;
 		this.precioPorDia = precioPorDia;
-		this.estado = estado;
 	}
+
+
 
 	public int getNumeroBungalow() {
 		return numeroBungalow;

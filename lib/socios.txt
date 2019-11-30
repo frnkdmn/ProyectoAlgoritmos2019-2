@@ -1,0 +1,6 @@
+10001;Nataly Corazón;Ballasco Fernandez;12345678;999999999
+10002;Renzo Raúl;Bernaola Doroteo;71373635;993238155
+10003;Miguel Angel;Huamán Palacios;87654321;43434343434
+10004;Jessica Cristina;García Rojas;45678123;924590258
+10005;Emilio Eduardo;Paredes Poblete;12387456;980699614
+10006;Franco;Romero;4353345;3242342443

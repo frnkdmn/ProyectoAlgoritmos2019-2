@@ -57,7 +57,6 @@ public class FrmInicio extends JFrame implements ActionListener, WindowListener 
 	private FrmHospedajesPendientes frmHospedajesPendientes = new FrmHospedajesPendientes();
 	private FrmHospedajesPagados frmHospedajesPagados = new FrmHospedajesPagados();
 	private FrmBoletas frmBoletas = new FrmBoletas();
-	private JMenuItem mntmPagoExtra;
 	/**
 	 * Launch the application.
 	 */
@@ -145,11 +144,6 @@ public class FrmInicio extends JFrame implements ActionListener, WindowListener 
 		mntmHospedajes.setIcon(new ImageIcon(FrmInicio.class.getResource("/imagenes/money.png")));
 		mntmHospedajes.addActionListener(this);
 		mnPago.add(mntmHospedajes);
-		
-		mntmPagoExtra = new JMenuItem("pago extra");
-		mntmPagoExtra.addActionListener(this);
-		mntmPagoExtra.setIcon(new ImageIcon(FrmInicio.class.getResource("/imagenes/money.png")));
-		mnPago.add(mntmPagoExtra);
 		
 		JMenu mnReporte = new JMenu("Reporte");
 		mnReporte.setIcon(new ImageIcon(FrmInicio.class.getResource("/imagenes/report_magnify.png")));
@@ -335,5 +329,4 @@ public class FrmInicio extends JFrame implements ActionListener, WindowListener 
 		
 		frm.setLocation(posX,posY-100);
 	}
-	
 }

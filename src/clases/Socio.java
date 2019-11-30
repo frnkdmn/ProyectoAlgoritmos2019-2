@@ -5,9 +5,14 @@ public class Socio {
 	private String nombres;
 	private String apellidos;
 	private String dni;
-	private int telefono;
+	private String telefono;
 	
-	public Socio(int codigoSocio, String nombres, String apellidos, String dni, int telefono) {
+	
+	public Socio() {
+		super();
+	}
+
+	public Socio(int codigoSocio, String nombres, String apellidos, String dni, String telefono) {
 		super();
 		this.codigoSocio = codigoSocio;
 		this.nombres = nombres;
@@ -48,11 +53,11 @@ public class Socio {
 		this.dni = dni;
 	}
 
-	public int getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(int telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 	

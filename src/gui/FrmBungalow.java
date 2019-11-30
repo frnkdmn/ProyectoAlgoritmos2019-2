@@ -1,6 +1,13 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -16,13 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import clases.Bungalow;
-import controlador.bungalowControlador;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
+import controlador.BungalowControlador;
 
 public class FrmBungalow extends JInternalFrame implements ActionListener, ItemListener, MouseListener {
 
@@ -30,7 +31,7 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 	 * 
 	 */
 	// PASO1
-	private bungalowControlador c = new bungalowControlador();
+	private BungalowControlador c = new BungalowControlador();
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNumero;
 	private JTable table;
@@ -41,6 +42,9 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JScrollPane scrollPane;
+	private JButton btnConsultar;
+	private JLabel lblConsultacdigo;
+	private JTextField txtCod2;
 
 	/**
 	 * Launch the application.
@@ -62,6 +66,7 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 	 * Create the frame.
 	 */
 	public FrmBungalow() {
+		setBackground(SystemColor.scrollbar);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setIconifiable(true);
 		setClosable(true);
@@ -84,7 +89,9 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		cboEstado.setBounds(125, 72, 96, 20);
 		getContentPane().add(cboEstado);
 
-		txtNumero = new JTextField();
+		txtNumero = new JTextField("" + c.codigoCorrelativo());
+		txtNumero.setBackground(SystemColor.activeCaption);
+		txtNumero.setEditable(false);
 		txtNumero.setBounds(125, 33, 96, 20);
 		getContentPane().add(txtNumero);
 		txtNumero.setColumns(10);
@@ -96,12 +103,12 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 
 		btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(this);
-		btnModificar.setBounds(484, 71, 89, 23);
+		btnModificar.setBounds(484, 100, 89, 23);
 		getContentPane().add(btnModificar);
 
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(this);
-		btnEliminar.setBounds(484, 105, 89, 23);
+		btnEliminar.setBounds(484, 134, 89, 23);
 		getContentPane().add(btnEliminar);
 
 		JLabel lblCatergora = new JLabel("Catergor\u00EDa:");
@@ -135,6 +142,28 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		txtPrecio.setBounds(125, 140, 96, 20);
 		getContentPane().add(txtPrecio);
 		txtPrecio.setColumns(10);
+
+		btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					consultar();
+				} catch (Exception e2) {
+					mensaje("Debe ingresar un codigo válido");
+				}
+			}
+		});
+		btnConsultar.setBounds(484, 66, 89, 23);
+		getContentPane().add(btnConsultar);
+
+		lblConsultacdigo = new JLabel("Consulta(C\u00F3digo):");
+		lblConsultacdigo.setBounds(248, 36, 113, 14);
+		getContentPane().add(lblConsultacdigo);
+
+		txtCod2 = new JTextField();
+		txtCod2.setBounds(371, 33, 96, 20);
+		getContentPane().add(txtCod2);
+		txtCod2.setColumns(10);
 		// Inicia el programa con un listar
 		listar();
 	}
@@ -202,7 +231,18 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 	}
 
 	protected void handleBtnEliminarActionPerformed(ActionEvent e) {
-		eliminar();
+		if (c.tamaño() == 0) {
+			mensaje("No existen bungalows");
+		} else {
+			int ok = confirmar("¿Desea eliminar el bungalow " + txtNumero.getText() + "?");
+			if (ok == 0) {
+				eliminar();
+			}
+		}
+	}
+
+	int confirmar(String s) {
+		return JOptionPane.showConfirmDialog(this, s, "Alerta", 0, 1, null);
 	}
 
 	// métodos del matenimiento
@@ -214,33 +254,43 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		// Se añade datos a la tabla
 		for (int i = 0; i < c.tamaño(); i++) {
 			Bungalow x = c.obtener(i);
-			Object[] f = { x.getNumeroBungalow(), convierteEstado(x.getEstado()), convierteCategoria(x.getCategoria()), x.getPrecioPorDia(), };
+			Object[] f = { x.getNumeroBungalow(), convierteEstado(x.getEstado()), convierteCategoria(x.getCategoria()),
+					x.getPrecioPorDia() };
 			dtm.addRow(f);
 		}
 	}
 
 	void adicionar() {
-		String cod = txtNumero.getText().trim();
+		int cod = Integer.parseInt(txtNumero.getText().trim());
 		int est = cboEstado.getSelectedIndex();
 		int cat = cboCategoria.getSelectedIndex();
-		String pre = txtPrecio.getText().trim();
+		double pre = Double.parseDouble(txtPrecio.getText().trim());
 		// No existe
-		if (c.buscarPorCodigo(Integer.parseInt(cod)) == null) {
-			Bungalow obj = new Bungalow();
-			obj.setNumeroBungalow(Integer.parseInt(cod));
-			obj.setEstado(est);
-			obj.setCategoria(cat);
-			obj.setPrecioPorDia(Double.parseDouble(pre));
+		if (est == 0) {
+
+			Bungalow obj = new Bungalow(cod, est, cat, pre);
 			c.agregar(obj);
 			c.grabarData();
 			listar();
 			mensaje("Se agregó correctamente");
 			limpiarCajas();
-		} else {
-			// Si existe un vehiculo con esa placa
-			mensaje("Ya existe producto con código :" + cod);
-		}
 
+		} else
+			mensaje("Estado debería ser libre");
+
+	}
+
+	void consultar() {
+		int cod = Integer.parseInt(txtCod2.getText().trim());
+		if (c.buscarPorCodigo(cod) == null) {
+			mensaje("No existe Socio con codigo " + cod);
+		} else {
+			Bungalow obj = c.buscarPorCodigo(cod);
+			txtNumero.setText(String.valueOf(obj.getNumeroBungalow()));
+			cboEstado.setSelectedIndex(obj.getEstado());
+			cboCategoria.setSelectedIndex(obj.getCategoria());
+			txtPrecio.setText(String.valueOf(obj.getPrecioPorDia()));
+		}
 	}
 
 	void buscar() {
@@ -250,8 +300,8 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		} else {
 			// Se obtiene valores de la celda
 			int cod = (Integer) table.getValueAt(fila, 0);
-			int est = convierteEstadoString((String)table.getValueAt(fila, 1));
-			int cat = convierteCategoriaString((String)table.getValueAt(fila, 2));
+			int est = convierteEstadoString((String) table.getValueAt(fila, 1));
+			int cat = convierteCategoriaString((String) table.getValueAt(fila, 2));
 			double pre = (Double) table.getValueAt(fila, 3);
 
 			txtNumero.setText(String.valueOf(cod));
@@ -263,43 +313,45 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 
 	void eliminar() {
 		int cod = Integer.parseInt(txtNumero.getText().trim());
-
 		// NO EXISTE auto con esa placa
 		if (c.buscarPorCodigo(cod) == null) {
-			mensaje("No existe producto con codigo " + cod);
-		} else {// SI EXISTE auto con esa placa
-			c.eliminaPorCodigo(cod);
-			c.grabarData();
-			listar();
-			limpiarCajas();
+			mensaje("No existe Bungalow N°" + cod);
+		} else {
+			if (c.buscarPorCodigo(cod).getEstado() == 1) {
+				mensaje("No se puede modificar un bugalow ocupado");
+			} else {// SI EXISTE auto con esa placa
+				c.eliminaPorCodigo(cod);
+				c.grabarData();
+				listar();
+				limpiarCajas();
+			}
 		}
+
 	}
 
 	void actualizar() {
-		String cod = txtNumero.getText().trim();
+		int cod = Integer.parseInt(txtNumero.getText().trim());
 		int est = cboEstado.getSelectedIndex();
 		int cat = cboCategoria.getSelectedIndex();
-		String pre = txtPrecio.getText().trim();
-
-		// No existe
-		if (c.buscarPorCodigo(Integer.parseInt(cod)) == null) {
-			mensaje("No existe producto con código :" + cod);
+		double pre = Double.parseDouble(txtPrecio.getText().trim());
+		if (c.buscarPorCodigo(cod) == null) {
+			mensaje("No existe Bungalow N°" + cod);
 		} else {
-			Bungalow obj = new Bungalow();
-			obj.setNumeroBungalow(Integer.parseInt(cod));
-			obj.setEstado(est);
-			obj.setCategoria(cat);
-			obj.setPrecioPorDia(Double.parseDouble(pre));
-			c.actualizar(obj);
-			c.grabarData();
-			listar();
-			mensaje("Se acutalizó correctamente");
-			limpiarCajas();
+			if (c.buscarPorCodigo(cod).getEstado() == 1) {
+				mensaje("No se puede modificar un bugalow ocupado");
+			} else {
+				Bungalow obj = new Bungalow(cod, est, cat, pre);
+				c.actualizar(obj);
+				c.grabarData();
+				listar();
+				mensaje("Se acutalizó correctamente");
+				limpiarCajas();
+			}
 		}
 	}
 
 	void limpiarCajas() {
-		txtNumero.setText("");
+		txtNumero.setText("" + c.codigoCorrelativo());
 		cboEstado.setSelectedIndex(0);
 		cboCategoria.setSelectedIndex(0);
 		txtPrecio.setText("100");
@@ -308,33 +360,38 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 	void mensaje(String msg) {
 		JOptionPane.showMessageDialog(this, msg);
 	}
+
 	String convierteEstado(int estado) {
-		if(estado==0) {
+		if (estado == 0) {
 			return "Libre";
-		}
-		else return "Ocupado";
+		} else
+			return "Ocupado";
 	}
+
 	int convierteEstadoString(String estado) {
-		if(estado.equals("Libre")) {
+		if (estado.equals("Libre")) {
 			return 0;
-		}
-		else return 1;
+		} else
+			return 1;
 	}
+
 	String convierteCategoria(int cat) {
 		switch (cat) {
 		case 0:
 			return "Simple";
-		case 1: 
+		case 1:
 			return "Doble";
 		default:
 			return "Familiar";
 		}
 	}
+
 	int convierteCategoriaString(String cat) {
-		if(cat.equals("Simple")){
+		if (cat.equals("Simple")) {
 			return 0;
-		} else if(cat.equals("Doble")) {
+		} else if (cat.equals("Doble")) {
 			return 1;
-		} else return 2;
+		} else
+			return 2;
 	}
 }

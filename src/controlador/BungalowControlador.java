@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import clases.Bungalow;
 
-public class bungalowControlador {
+public class BungalowControlador {
 		private ArrayList<Bungalow> lista = new ArrayList<Bungalow>();
 	// métodos básicos de la lista
-		public bungalowControlador() {
+		public BungalowControlador() {
 			//apenas se crea el objeto , se crea la data
 			//pasa los datos del archivo de texto a la lista
 			cargaData();
@@ -57,7 +57,14 @@ public class bungalowControlador {
 				}
 			}
 		}
-		
+		public int codigoCorrelativo(){
+			if(tamaño() ==0)
+				return 30001;
+			else{
+				int ultCodigo = obtener(tamaño()-1).getNumeroBungalow();
+				return ultCodigo + 1;
+			}
+		}
 		private void cargaData(){
 			BufferedReader br = null;
 			try {
