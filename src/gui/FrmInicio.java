@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+
 public class FrmInicio extends JFrame implements ActionListener, WindowListener {
 
 	/**

@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import clases.Socio;
+import controlador.IngresosControlador;
 import controlador.SocioControlador;
 
 import javax.swing.JScrollPane;
@@ -37,6 +38,7 @@ public class FrmSocio extends JInternalFrame implements ActionListener {
 	private JTextField txtTel;
 	private JTable table;
 	private JTextField txtCod;
+	private IngresosControlador b = new IngresosControlador();
 	private SocioControlador c = new SocioControlador();
 	private JTextField txtCod2;
 
@@ -279,6 +281,8 @@ public class FrmSocio extends JInternalFrame implements ActionListener {
 		} else {// SI EXISTE auto con esa placa
 			c.eliminaPorCodigo(cod);
 			c.grabarData();
+			b.eliminaPorSocio(cod);
+			b.grabarData();
 			listar();
 			limpiarCajas();
 			mensaje("Socio eliminado");

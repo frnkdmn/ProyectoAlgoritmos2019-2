@@ -39,6 +39,7 @@ public class FrmProducto extends JInternalFrame implements ActionListener, Mouse
 	private JButton btnConsultar;
 	private JLabel lblConsultarcdigo;
 	private JTextField txtCod2;
+	
 
 	/**
 	 * Launch the application.
@@ -239,7 +240,7 @@ public class FrmProducto extends JInternalFrame implements ActionListener, Mouse
 			dtm.addRow(f);
 		}
 	}
-
+	
 	void adicionar() {
 		int cod = Integer.parseInt(txtCodigo.getText().trim());
 		String nom = txtDetalle.getText().trim();

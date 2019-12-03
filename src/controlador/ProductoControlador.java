@@ -28,7 +28,16 @@ public class ProductoControlador {
 	public Producto obtener(int pos) {
 		return lista.get(pos);
 	}
-
+	public Producto buscarPorNombre(String nom){
+		Producto salida = null;
+		for(Producto x: lista){
+			if(x.getDetalle().equals(nom)){
+				salida = x;
+				break;
+			}
+		}
+		return salida;
+	}
 	// métodos adicionales
 	public Producto buscarPorCodigo(int aux) {
 		Producto salida = null;
@@ -70,7 +79,7 @@ public class ProductoControlador {
 		BufferedReader br = null;
 		try {
 			//Se lee el archivo txt
-			br = new BufferedReader(new FileReader("Productos.txt"));
+			br = new BufferedReader(new FileReader("productos.txt"));
 			String linea = null;
 			//readLine captura una linea
 			while(  (linea = br.readLine()) != null){
@@ -96,7 +105,7 @@ public class ProductoControlador {
 		PrintWriter pw = null;
 		try {
 			String linea;
-			pw = new PrintWriter(new FileWriter("Productos.txt"));
+			pw = new PrintWriter(new FileWriter("productos.txt"));
 			for (Producto x: lista) {
 				linea = x.getCodigoProducto() + ";" +   x.getDetalle() + ";" +	x.getPrecioUnitario() + ";" +	x.getStock();
 				pw.println(linea);

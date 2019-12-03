@@ -4,19 +4,24 @@ public class Hospedaje {
 	private int codigoHospedaje;
 	private int codigoIngreso;
 	private int numeroBugalow;
+	private String fechaEntrada;
 	private String fechaSalida;
-	private String horaSalida;
 	private double costoHospedaje;
 	private int estado;
 	
-	public Hospedaje(int codigoHospedaje, int codigoIngreso, int numeroBugalow, String fechaSalida, String horaSalida,
+	
+	public Hospedaje() {
+		super();
+	}
+
+	public Hospedaje(int codigoHospedaje, int codigoIngreso, int numeroBugalow, String fechaEntrada, String fechaSalida,
 			double costoHospedaje, int estado) {
 		super();
 		this.codigoHospedaje = codigoHospedaje;
 		this.codigoIngreso = codigoIngreso;
 		this.numeroBugalow = numeroBugalow;
+		this.fechaEntrada = fechaEntrada;
 		this.fechaSalida = fechaSalida;
-		this.horaSalida = horaSalida;
 		this.costoHospedaje = costoHospedaje;
 		this.estado = estado;
 	}
@@ -45,20 +50,20 @@ public class Hospedaje {
 		this.numeroBugalow = numeroBugalow;
 	}
 
+	public String getFechaEntrada() {
+		return fechaEntrada;
+	}
+
+	public void setFechaEntrada(String fechaEntrada) {
+		this.fechaEntrada = fechaEntrada;
+	}
+
 	public String getFechaSalida() {
 		return fechaSalida;
 	}
 
 	public void setFechaSalida(String fechaSalida) {
 		this.fechaSalida = fechaSalida;
-	}
-
-	public String getHoraSalida() {
-		return horaSalida;
-	}
-
-	public void setHoraSalida(String horaSalida) {
-		this.horaSalida = horaSalida;
 	}
 
 	public double getCostoHospedaje() {
@@ -78,4 +83,5 @@ public class Hospedaje {
 	}
 	
 	
+
 }

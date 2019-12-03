@@ -36,7 +36,6 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 	private JTextField txtNumero;
 	private JTable table;
 	private JComboBox<String> cboCategoria;
-	private JComboBox<String> cboEstado;
 	private JTextField txtPrecio;
 	private JButton btnAdicionar;
 	private JButton btnModificar;
@@ -80,15 +79,6 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		lblNmero.setBounds(34, 36, 81, 14);
 		getContentPane().add(lblNmero);
 
-		JLabel lblEstado = new JLabel("Estado: ");
-		lblEstado.setBounds(34, 75, 81, 14);
-		getContentPane().add(lblEstado);
-
-		cboEstado = new JComboBox<String>();
-		cboEstado.setModel(new DefaultComboBoxModel<String>(new String[] { "Libre", "Ocupado" }));
-		cboEstado.setBounds(125, 72, 96, 20);
-		getContentPane().add(cboEstado);
-
 		txtNumero = new JTextField("" + c.codigoCorrelativo());
 		txtNumero.setBackground(SystemColor.activeCaption);
 		txtNumero.setEditable(false);
@@ -112,13 +102,13 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		getContentPane().add(btnEliminar);
 
 		JLabel lblCatergora = new JLabel("Catergor\u00EDa:");
-		lblCatergora.setBounds(34, 109, 81, 14);
+		lblCatergora.setBounds(34, 75, 81, 14);
 		getContentPane().add(lblCatergora);
 
 		cboCategoria = new JComboBox<String>();
 		cboCategoria.addItemListener(this);
 		cboCategoria.setModel(new DefaultComboBoxModel<String>(new String[] { "Simple", "Doble", "Familiar" }));
-		cboCategoria.setBounds(125, 106, 96, 20);
+		cboCategoria.setBounds(125, 72, 96, 20);
 		getContentPane().add(cboCategoria);
 
 		scrollPane = new JScrollPane();
@@ -133,13 +123,13 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		scrollPane.setViewportView(table);
 
 		JLabel lblPrecio = new JLabel("Precio:");
-		lblPrecio.setBounds(31, 143, 48, 14);
+		lblPrecio.setBounds(34, 104, 48, 14);
 		getContentPane().add(lblPrecio);
 
 		txtPrecio = new JTextField();
 		txtPrecio.setText("100");
 		txtPrecio.setEditable(false);
-		txtPrecio.setBounds(125, 140, 96, 20);
+		txtPrecio.setBounds(125, 101, 96, 20);
 		getContentPane().add(txtPrecio);
 		txtPrecio.setColumns(10);
 
@@ -164,6 +154,16 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		txtCod2.setBounds(371, 33, 96, 20);
 		getContentPane().add(txtCod2);
 		txtCod2.setColumns(10);
+		
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c = new BungalowControlador();
+				listar();
+			}
+		});
+		btnActualizar.setBounds(86, 134, 89, 23);
+		getContentPane().add(btnActualizar);
 		// Inicia el programa con un listar
 		listar();
 	}
@@ -262,7 +262,7 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 
 	void adicionar() {
 		int cod = Integer.parseInt(txtNumero.getText().trim());
-		int est = cboEstado.getSelectedIndex();
+		int est = 0;
 		int cat = cboCategoria.getSelectedIndex();
 		double pre = Double.parseDouble(txtPrecio.getText().trim());
 		// No existe
@@ -287,7 +287,6 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		} else {
 			Bungalow obj = c.buscarPorCodigo(cod);
 			txtNumero.setText(String.valueOf(obj.getNumeroBungalow()));
-			cboEstado.setSelectedIndex(obj.getEstado());
 			cboCategoria.setSelectedIndex(obj.getCategoria());
 			txtPrecio.setText(String.valueOf(obj.getPrecioPorDia()));
 		}
@@ -300,12 +299,10 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		} else {
 			// Se obtiene valores de la celda
 			int cod = (Integer) table.getValueAt(fila, 0);
-			int est = convierteEstadoString((String) table.getValueAt(fila, 1));
 			int cat = convierteCategoriaString((String) table.getValueAt(fila, 2));
 			double pre = (Double) table.getValueAt(fila, 3);
 
 			txtNumero.setText(String.valueOf(cod));
-			cboEstado.setSelectedIndex(est);
 			cboCategoria.setSelectedIndex(cat);
 			txtPrecio.setText(String.valueOf(pre));
 		}
@@ -331,7 +328,7 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 
 	void actualizar() {
 		int cod = Integer.parseInt(txtNumero.getText().trim());
-		int est = cboEstado.getSelectedIndex();
+		int est = 0;
 		int cat = cboCategoria.getSelectedIndex();
 		double pre = Double.parseDouble(txtPrecio.getText().trim());
 		if (c.buscarPorCodigo(cod) == null) {
@@ -352,7 +349,6 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 
 	void limpiarCajas() {
 		txtNumero.setText("" + c.codigoCorrelativo());
-		cboEstado.setSelectedIndex(0);
 		cboCategoria.setSelectedIndex(0);
 		txtPrecio.setText("100");
 	}
@@ -367,14 +363,6 @@ public class FrmBungalow extends JInternalFrame implements ActionListener, ItemL
 		} else
 			return "Ocupado";
 	}
-
-	int convierteEstadoString(String estado) {
-		if (estado.equals("Libre")) {
-			return 0;
-		} else
-			return 1;
-	}
-
 	String convierteCategoria(int cat) {
 		switch (cat) {
 		case 0:

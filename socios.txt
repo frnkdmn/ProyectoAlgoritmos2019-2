@@ -1,0 +1,4 @@
+10006;Joel;Clemente Romero;3423424;934211434
+10007;Jair;Aspajo Ramos;4342345;932131412
+10008;Franco;Romero Morales;3454345;943493434
+10009;Jesus;Rodriguez Quintana;4324234;912312312

@@ -22,6 +22,8 @@ import clases.Ingreso;
 import controlador.IngresosControlador;
 import controlador.SocioControlador;
 
+import java.awt.SystemColor;
+
 public class FrmIngreso extends JInternalFrame {
 
 	/**
@@ -54,6 +56,7 @@ public class FrmIngreso extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmIngreso() {
+		setBackground(SystemColor.scrollbar);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setIconifiable(true);
 		setClosable(true);
@@ -76,7 +79,7 @@ public class FrmIngreso extends JInternalFrame {
 		getContentPane().add(lblNewLabel);
 
 		txtCod = new JTextField(""+ing.codigoCorrelativo());
-		txtCod.setEnabled(false);
+		txtCod.setBackground(SystemColor.activeCaption);
 		txtCod.setEditable(false);
 		txtCod.setBounds(118, 45, 96, 20);
 		getContentPane().add(txtCod);
@@ -94,11 +97,11 @@ public class FrmIngreso extends JInternalFrame {
 			cboSocio.addItem(soc.obtener(i).getCodigoSocio());
 		}
 
-		JButton btnIngresar = new JButton("Ingresar");
+		JButton btnIngresar = new JButton("Registrar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					adicionar();
+					registrar();
 				} catch (Exception e2) {
 					mensaje("Ingrese datos válidos");
 				}			
@@ -115,6 +118,21 @@ public class FrmIngreso extends JInternalFrame {
 		table.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Ingreso", "Socio", "Fecha Ingreso", "Hora Ingreso", "Invitados", "Costo", "Estado" }));
 		scrollPane.setViewportView(table);
+		
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				soc = new SocioControlador();
+				cboSocio.removeAllItems();
+				for(int i = 0;i<soc.tamaño();i++){	
+					cboSocio.addItem(soc.obtener(i).getCodigoSocio());
+				}
+				ing = new IngresosControlador();
+				listar();
+			}
+		});
+		btnActualizar.setBounds(486, 75, 89, 23);
+		getContentPane().add(btnActualizar);
 		listar();
 	}
 
@@ -131,7 +149,7 @@ public class FrmIngreso extends JInternalFrame {
 		}
 	}
 
-	public void adicionar() {
+	public void registrar() {
 		int codIng = Integer.parseInt(txtCod.getText().trim());
 		int codSoc = Integer.parseInt(cboSocio.getSelectedItem().toString());
 		String fecIng = fechaActual();

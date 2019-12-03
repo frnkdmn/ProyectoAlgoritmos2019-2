@@ -69,7 +69,7 @@ public class BungalowControlador {
 			BufferedReader br = null;
 			try {
 				//Se lee el archivo txt
-				br = new BufferedReader(new FileReader("Bungalow.txt"));
+				br = new BufferedReader(new FileReader("bungalows.txt"));
 				String linea = null;
 				//readLine captura una linea
 				while(  (linea = br.readLine()) != null){
@@ -94,7 +94,7 @@ public class BungalowControlador {
 			PrintWriter pw = null;
 			try {
 				String linea;
-				pw = new PrintWriter(new FileWriter("Bungalow.txt"));
+				pw = new PrintWriter(new FileWriter("bungalows.txt"));
 				for (Bungalow x: lista) {
 					linea = x.getNumeroBungalow() + ";" +   x.getEstado() + ";" +	x.getCategoria() + ";" +	x.getPrecioPorDia();
 					pw.println(linea);

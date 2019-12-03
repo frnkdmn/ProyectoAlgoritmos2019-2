@@ -1,0 +1,6 @@
+20002;Coca Cola;8.0;100
+20003;Kola Inglesa;5.0;100
+20004;Pilsen;15.0;100
+20005;Galleta;2.0;20
+20006;Helado;3.0;20
+20007;Doritos;1.2;100

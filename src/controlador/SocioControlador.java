@@ -70,7 +70,7 @@ public class SocioControlador {
 		BufferedReader br = null;
 		try {
 			// Se lee el archivo txt
-			br = new BufferedReader(new FileReader("Socios.txt"));
+			br = new BufferedReader(new FileReader("socios.txt"));
 			String linea = null;
 			// readLine captura una linea
 			while ((linea = br.readLine()) != null) {
@@ -99,7 +99,7 @@ public class SocioControlador {
 		PrintWriter pw = null;
 		try {
 			String linea;
-			pw = new PrintWriter(new FileWriter("Socios.txt"));
+			pw = new PrintWriter(new FileWriter("socios.txt"));
 			for (Socio x : lista) {
 				linea = x.getCodigoSocio() + ";" + x.getNombres() + ";" + x.getApellidos() + ";"
 						+ x.getDni() + ";" + x.getTelefono();
